@@ -1,0 +1,10 @@
+select {
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+select:focus {
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); */
+  outline: none; /* Remove the default focus outline */
+}
