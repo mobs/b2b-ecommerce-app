@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import contact from '../../constants/Images/contact.jpg';
+import React, { useState } from "react";
+import { contact } from "../../constants/Images";
 
 const Form = () => {
   const [formData, setFormData] = useState({

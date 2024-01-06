@@ -1,6 +1,6 @@
 import React from "react";
 import { navdetails } from "../../constants/NavabrData";
-import logoOg from "../../constants/Images/logoOg.png";
+import { logo } from "../../constants/Images";
 import { Link } from "react-router-dom";
 import { BsArrowRightCircle } from "react-icons/bs";
 
@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="md:flex block text-white justify-between p-8 pb-0">
       <div className="lg:ml-32 md:ml-24 ml-0 flex flex-col">
-        <img src={logoOg} className="h-32 w-48" alt="Logo" />
+        <img src={logo} className="h-32 w-48" alt="Logo" />
         <div className="w-64 text-tertiary">
           {navdetails.map((data, idx) => (
             <a href={data?.link} key={idx}>

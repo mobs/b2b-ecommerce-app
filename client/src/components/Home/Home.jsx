@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
 import { features, socials, storeDetails } from "../../constants/homeData";
-import banner2 from "../../constants/Images/banner 2.png";
+import { banner2 } from "../../constants/Images";
 
 import NumberCounter from "./Counter";
 import Form from "./Form";
+import Carousel from "../Carousel/Carousel";
 
 const Home = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
     <div className="text-tertiary">
+      <Carousel />
       {/* carousel ayega */}
       <div className="flex flex-col items-center">
         <p className="font-Sofia absolute font-extrabold md:text-9xl text-5xl opacity-10">
@@ -28,7 +30,7 @@ const Home = () => {
       <div className=" grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 m-8 md:ml-32 md:mr-32">
         {features.map((feat) => (
           <div
-            className="flex flex-col gap-1 rounded-xl   transition-transform transform-gpu hover:translate-x-0 hover:translate-y-6 duration-500 shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(23,125,232,0.2)]"
+            className="flex flex-col gap-1 rounded-xl transition-transform transform-gpu hover:translate-x-0 hover:translate-y-6 duration-500 shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(23,125,232,0.2)]"
             key={feat.title}
           >
             <img src={feat.image} className="rounded h-48" />

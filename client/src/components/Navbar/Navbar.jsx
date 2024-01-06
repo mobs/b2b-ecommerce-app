@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import decode from "jwt-decode";
-import logoOg from '../../constants/Images/logoOg.png'
+import React from "react";
+import { Link } from "react-router-dom";
+import { logo } from "../../constants/Images";
 import {
   products,
   navdetails,
@@ -18,7 +16,7 @@ const Navbar = () => {
     <nav className="z-20 border-gray-200 text-tertiary m-0">
       <div className="mt-4 max-w-screen-xl flex flex-wrap items-top justify-between mx-auto p-4 ">
         <Link to="/">
-          <img src={logoOg} className="h-32" alt="Logo" />
+          <img src={logo} className="h-32" alt="Logo" />
         </Link>
         {navdetails.map((d, idx) => (
           <a
