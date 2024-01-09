@@ -27,9 +27,9 @@ const userSchema = new Schema({
         type: String, // cloudinary url
         required: true
     },
-    coverImage: {
-        type: String // cloudinary url
-    },
+    // coverImage: {
+    //     type: String // cloudinary url
+    // },
     allProducts: [
         {
             type: Schema.Types.ObjectId,

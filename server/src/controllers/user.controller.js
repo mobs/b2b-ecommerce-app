@@ -3,16 +3,32 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/users.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken"
 
+const generateAccessAndRefreshTokens = async(userId) => {
+    try {
+        const user = await User.findById(userId)
+        const accessToken = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
 
-export const registerUser = ( async (req, res) => {
+        user.refreshToken = refreshToken
+        await user.save({ validateBeforeSave: false })
+
+        return {accessToken, refreshToken}
+
+    } catch (error) {
+        throw new ApiError(500, "Something went wrong while generating refresh and access token")
+    }
+}
+
+export const registerUser = asyncHandler( async (req, res) => {
 // take data from frontend(user) from body
 // check using email or id for user to be present
 // if present return saying user exisits
 // if not present add a new user to the database
 // return to user, user created or login()
 
-/* More detailed algorith(appraoch) for registration */
+/* More detailed algorithm(appraoch) for registration */
 // get user details from frontend
 // validation - not empty
 // check if user already exists: username, email
@@ -32,7 +48,8 @@ export const registerUser = ( async (req, res) => {
         throw new ApiError(400, "All fields are required")
     }
 
-    const existedUser = User.findOne({
+    // check if user already exists
+    const existedUser = await User.findOne({
         $or: [{ email }, { username }]
     })
 
@@ -42,14 +59,13 @@ export const registerUser = ( async (req, res) => {
 
     // req.files is given by multer to check if files are available, we can access it as we have already setup the multer middleware in our post request for register
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverLocalPath = req.files?.coverImage[0]?.path;
 
     if(!avatarLocalPath) {
         throw new ApiError(400, "Avatar file does not exists")
     }
 
+
     const avatar = await uploadOnCloudinary(avatarLocalPath);
-    const coverImage = await uploadOnCloudinary(coverLocalPath);
 
     if(!avatar) {
         throw new ApiError(400, "Avatar file does not exists")
@@ -58,7 +74,6 @@ export const registerUser = ( async (req, res) => {
     const user = await User.create({
         fullname,
         avatar: avatar.url,
-        coverImage: coverImage?.url || "",
         email,
         password,
         username: username.toLowerCase()
@@ -68,12 +83,138 @@ export const registerUser = ( async (req, res) => {
         "-password -refreshToken"
     )
 
-    if(createdUser) {
+    if(!createdUser) {
         throw new ApiError(500, "Something went wrong while registring user")
     }
 
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User registered succesfully")
     )
+
+})
+
+export const loginUser = asyncHandler( async (req, res) => {
+    // Algorithm for logging in user
+
+    // get data from body
+    // find the user using email or username
+    // validate the password
+    // generate access and refresh tokens
+    // send them in cookies
+
+    const {email, username, password} = req.body;
+
+    if(!(username || email)) {
+        throw new ApiError(400, "username or email is required")
+    }
+
+    const user = await User.findOne({
+        $or: [{username}, {email}]
+    })
+
+    if(!user) {
+        throw new ApiError(404, "User does not exists")
+    }
+
+    const isPasswordValid = await user.isPasswordCorrect(password)
+    
+    if(!isPasswordValid) {
+        throw new ApiError(401, "Invalid User Credentials")
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
+
+    // since the "user" we have does not refresh token as we have generated the tokens afterwards, so now either we have to update the user or we can again find the user using User and DB call
+    // we have to keep in mind about the heaviness like if finding user is going to take a lot of time, then we update and use else we can find 
+    const loggedUser = await User.findById(user._id).select("-password -refreshToken")
+
+    // now, sending data in cookies(which can be modified at frontend also), so to make this cookies only updated by server we have to pass options like below -
+    // this will allow the frontend to read the cookies but not modify it
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(
+        200,
+        {
+            user: loggedUser, accessToken, refreshToken
+        },
+        "User Logged In Successfully"
+    ))
+})
+
+export const logoutUser = asyncHandler( async (req, res) => {
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set: {
+                refreshToken: undefined
+            }
+        },{
+            new: true
+        }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", "", options)
+    .clearCookie("refreshToken", "", options)
+    .json(new ApiResponse(200, {}, "User logged Out"))
+})
+
+export const refreshAccessToken = asyncHandler( async (req, res) => {
+    const incomingRefreshToken = req.cookies.refreshToken || req.body
+
+    if(incomingRefreshToken) {
+        throw new ApiError(401, "unauthorized request")
+    }
+
+    try {
+        const decodedToken = jwt.verify(
+            incomingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+    
+        const user = User.findById(decodedToken?._id)
+    
+        if(!user) {
+            throw new ApiError(401, "Invalid refresh token")
+        }
+    
+        if(incomingRefreshToken !== user?.refreshToken) {
+            throw new ApiError(401, "Refresh token is expired or used")
+        }
+    
+        const { accessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user._id)
+    
+        const options = {
+            httpOnly: true,
+            secured: true
+        }
+    
+        res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", newRefreshToken, options)
+        .json(
+            new ApiResponse(
+                200,
+                {accessToken, refreshToken: newRefreshToken},
+                "Access token refreshed"
+            )
+        )
+    } catch (error) {
+        throw new ApiError(401, error?.message || "Invalid Refresh Token")
+    }
 
 })
