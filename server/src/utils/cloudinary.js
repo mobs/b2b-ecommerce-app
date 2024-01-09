@@ -27,7 +27,29 @@ const uploadOnCloudinary = async (localPath) => {
     }
 }
 
-export { uploadOnCloudinary };
+const deleteFromCloudinary = async (url) => {
+    try {
+        const urlParts = url.split('/');
+
+// Find the index of 'upload' segment to determine the location of public_id
+        const uploadIndex = urlParts.indexOf('upload');
+
+        let publicId = '';
+        if (uploadIndex !== -1) {
+            let image = urlParts[uploadIndex + 2]
+            image = image.split('.');
+            publicId = image[0]
+        }
+        await cloudinary.uploader.destroy(publicId);
+        return "Deleted successfully"
+
+    } catch (error) {
+        console.log("Not able to delete")
+        return null
+    }
+}
+
+export { uploadOnCloudinary, deleteFromCloudinary };
 
 
 
