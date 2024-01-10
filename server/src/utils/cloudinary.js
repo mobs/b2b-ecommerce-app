@@ -31,7 +31,6 @@ const deleteFromCloudinary = async (url) => {
     try {
         const urlParts = url.split('/');
 
-// Find the index of 'upload' segment to determine the location of public_id
         const uploadIndex = urlParts.indexOf('upload');
 
         let publicId = '';
@@ -41,11 +40,11 @@ const deleteFromCloudinary = async (url) => {
             publicId = image[0]
         }
         await cloudinary.uploader.destroy(publicId);
-        return "Deleted successfully"
+        return true
 
     } catch (error) {
-        console.log("Not able to delete")
-        return null
+        console.log("Not able to delete: ", error?.message)
+        return false
     }
 }
 
