@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { logo } from "../../constants/Images";
 import {
   products,
@@ -10,7 +11,7 @@ import {
 import "./navbar.css";
 
 const Navbar = () => {
-  
+  const { user, error } = useSelector((state) => state.user)  
 
   return (
     <nav className="z-20 border-gray-200 text-tertiary m-0">
@@ -48,7 +49,7 @@ const Navbar = () => {
           onClick={() => setIsOpen(!isOpen)}
           data-collapse-toggle="navbar-default"
           type="button"
-          className="peer ml-8 mt-4 inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          className="peer ml-8 mt-4 inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
           aria-controls="navbar-default"
           aria-expanded="false"
         >
@@ -69,7 +70,7 @@ const Navbar = () => {
           </svg>
         </button>
 
-        <div className="z-30 ml-8 w-screen hidden absolute peer-hover:flex hover:flex flex-col  drop-shadow-lg">
+        <div className="z-30 ml-8 w-screen hidden absolute peer-hover:flex hover:flex flex-col drop-shadow-lg">
           <Link
             to="/"
             className="w-48 px-4 py-3 hover:bg-primary"
@@ -179,7 +180,7 @@ const Navbar = () => {
         className="max-w-screen-xl lg:flex flex-wrap items-center justify-between mx-auto p-4"
         id="navbar-default"
       >
-        <ul className="lg:flex hidden font-medium flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:border-0">
+        <ul className="lg:flex hidden font-medium flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-4 md:mt-0 md:border-0">
           <Link to="/">
             <li className="hover:text-primary block py-2 pl-3 pr-4  rounded">
               HOME
@@ -192,7 +193,19 @@ const Navbar = () => {
                 PRODUCTS <i className="ml-4 fa-solid fa-angle-down"></i>
               </button>
               <div className="text-tertiary hidden absolute peer-hover:flex hover:flex flex-col drop-shadow-lg bg-secondary">
-                {products.map((prod, idx) => (
+                {
+                  products.map((prod, idx) => (
+                    <Link
+                    to={`/Products/${encodeURIComponent(prod.title)}`}
+                    className="px-5 py-3 hover:bg-primary "
+                    href=""
+                    key={idx}
+                    >
+                      {prod.title}
+                    </Link>
+                  ))
+                }
+                {/* {products.map((prod, idx) => (
                   <>
                     {prod.title === "Designing Work" ? (
                       <Link
@@ -245,7 +258,7 @@ const Navbar = () => {
                       </Link>
                     )}
                   </>
-                ))}
+                ))} */}
               </div>
             </Link>
           </li>
@@ -280,13 +293,25 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/SignIn">
-              <button className="p-4 py-2 bg-primary text-tertiary rounded">
-                  SIGN IN
-              </button>
-            </Link>
+            
           </li>
         </ul>
+        
+          { user ? 
+            <Link to="/Profile" className="flex gap-4 items-center p-2 px-8 rounded-xl shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(23,125,232,0.2)] hover:text-primary">
+              <img src={user?.avatar} className="h-8 w-8 rounded-full" /> 
+              <div>
+                <p> Welcome!!! </p>
+                <span className="font-bold"> {user?.fullname.toUpperCase()} </span>
+              </div>
+              
+            </Link> 
+          :
+          <Link to="/SignIn">
+            <button className="p-4 py-2 bg-primary text-tertiary rounded">
+                SIGN IN
+            </button>
+        </Link>}
       </div>
     </nav>
   );

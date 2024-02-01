@@ -1,20 +1,25 @@
 import React, { useState } from "react";
-
+import { useSelector } from "react-redux";
 import { features, socials, storeDetails } from "../../constants/homeData";
 import { banner2 } from "../../constants/Images";
 
 import NumberCounter from "./Counter";
-import Form from "./Form";
+import Form from "../ContactForm/Form"
 import Carousel from "../Carousel/Carousel";
+import Card from "../Card/Card";
 
 const Home = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [displayProducts, setDisplayProducts] = useState({});
+
+  const products = useSelector(state => state.product.products)
+
+  
 
   return (
     <div className="text-tertiary">
       <Carousel />
-      {/* carousel ayega */}
-      <div className="flex flex-col items-center">
+       <div className="flex flex-col items-center">
         <p className="font-Sofia absolute font-extrabold md:text-9xl text-5xl opacity-10">
           {" "}
           Features{" "}
@@ -27,16 +32,9 @@ const Home = () => {
         </div>
       </div>
 
-      <div className=" grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 m-8 md:ml-32 md:mr-32">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 m-8 md:ml-32 md:mr-32 lg:h-[50vh]">
         {features.map((feat) => (
-          <div
-            className="flex flex-col gap-1 rounded-xl transition-transform transform-gpu hover:translate-x-0 hover:translate-y-6 duration-500 shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(23,125,232,0.2)]"
-            key={feat.title}
-          >
-            <img src={feat.image} className="rounded h-48" />
-            <p className="m-4 font-bold text-xl text-primary">{feat.title}</p>
-            <p className="m-4 font-light">{feat.content}</p>
-          </div>
+          <Card data={feat} key={feat.title}/>
         ))}
       </div>
 
@@ -55,6 +53,16 @@ const Home = () => {
       </div>
 
       {/* saare products to display krna hai category wise 1st product only */}
+      
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 m-8 md:ml-32 md:mr-32">
+          {
+            products && products.map((product) => (
+              <div key={product._id}>
+                <Card data={product} />
+              </div>
+            )) 
+          }
+      </div>
 
       <div className="mt-4 shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(0,0,0,0.2)]">
         <img src={banner2} />

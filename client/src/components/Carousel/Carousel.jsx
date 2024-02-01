@@ -1,11 +1,8 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import { banner1, banner2, banner3, banner4 } from "../../constants/Images";
 import banner2 from "../../constants/Images/banner 2.png";
 import { carousel1, carousel2, carousel3} from "../../constants/Images";
-
-import './style.css'
 
 const Carousel = () => {
   const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
@@ -172,94 +169,3 @@ const Carousel = () => {
 };
 
 export default Carousel;
-
-// import React, { useState, useRef } from 'react'
-// import banner2 from "../../constants/Images/banner 2.png";
-// import './style.css'
-
-// const Carousel = () => {
-//       const carousel = useRef(null);
-
-
-//   const movePrev = () => {
-
-//   }
-  
-//   const moveNext = () => {
-
-//   }
-
-//   const isDisabled = () => {
-
-//   }
-
-//   return (
-//   <div className='carousel relative overflow-hiddden'>
-//     <div className="flex justify-between absolute top left w-full h-[60%] bg-white">
-//            <button
-//             onClick={movePrev}
-//             className="text-secondary w-10 text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
-//             disabled={isDisabled("prev")}
-//           >
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               className="h-12 w-20 -ml-5"
-//               fill="none"
-//               viewBox="0 0 24 24"
-//               stroke="currentColor"
-//               strokeWidth={2}
-//             >
-//               <path
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 d="M15 19l-7-7 7-7"
-//               />
-//             </svg>
-//           </button>
-//           <button
-//             onClick={moveNext}
-//             className="text-secondary w-10 text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
-//             disabled={isDisabled("next")}
-//           >
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               className="h-12 w-20 -ml-5"
-//               fill="none"
-//               viewBox="0 0 24 24"
-//               stroke="currentColor"
-//               strokeWidth={2}
-//             >
-//               <path
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 d="M9 5l7 7-7 7"
-//               />
-//             </svg>
-//           </button>
-//         </div>
-
-
-//         <div
-//           ref={carousel}
-//           className=" carousel-container relative flex gap-5 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
-//         >
-//           <div className='carousel-item '>
-//             <img src={banner2} />
-//           </div>
-//           <div className='carousel-item '>
-//             <img src={banner2} />
-//           </div>
-//           <div className='carousel-item '>
-//             <img src={banner2} />
-//           </div>
-//           <div className='carousel-item '>
-//             <img src={banner2} />
-//           </div>
-          
-//         </div>
-//   </div>
-
-//   )
-// }
-
-// export default Carousel

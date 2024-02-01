@@ -5,6 +5,6 @@ select {
 }
 
 select:focus {
-  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); */
-  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  outline: none; 
 }
