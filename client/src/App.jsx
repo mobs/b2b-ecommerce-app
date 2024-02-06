@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -17,7 +17,6 @@ import "./App.css";
 import { fetchProducts, persistLogin } from "./reducer/apiSlice";
 import Profile from "./components/Profile/Profile";
 
-
 function App() {
   const dispatch = useDispatch();
 
@@ -25,6 +24,9 @@ function App() {
     dispatch(fetchProducts())
   }, [])
 
+  useEffect(() => {
+    dispatch(persistLogin())
+  }, [])
 
   return (
     <div className="font-outfit">

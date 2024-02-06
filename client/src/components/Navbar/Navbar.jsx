@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { logo } from "../../constants/Images";
 import {
   products,
@@ -8,10 +8,16 @@ import {
   Commercial,
   Packaging,
 } from "../../constants/NavabrData";
+import { signOut } from "../../reducer/apiSlice";
 import "./navbar.css";
 
 const Navbar = () => {
-  const { user, error } = useSelector((state) => state.user)  
+  const { user, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(signOut());
+  }
 
   return (
     <nav className="z-20 border-gray-200 text-tertiary m-0">
@@ -71,18 +77,12 @@ const Navbar = () => {
         </button>
 
         <div className="z-30 ml-8 w-screen hidden absolute peer-hover:flex hover:flex flex-col drop-shadow-lg">
-          <Link
-            to="/"
-            className="w-48 px-4 py-3 hover:bg-primary"
-          >
+          <Link to="/" className="w-48 px-4 py-3 hover:bg-primary">
             {" "}
             Home{" "}
           </Link>
 
-          <Link
-            to="/Products"
-            className="px-4 py-3 w-48 hover:bg-primary"
-          >
+          <Link to="/Products" className="px-4 py-3 w-48 hover:bg-primary">
             <button className="peer w-full flex justify-between items-center">
               Products <i className="ml-4 fa-solid fa-angle-down"></i>
             </button>
@@ -100,9 +100,10 @@ const Navbar = () => {
                     </Link>
                   ) : prod.title === "Commercial Printing" ? (
                     <div className="px-4 py-3 hover:bg-primary ml-32">
-                      <span className="peer flex justify-between items-center"> 
-                      <button className="peer "> {prod.title} </button>
-                      <i className="peer fa-solid fa-angle-right "></i> </span>
+                      <span className="peer flex justify-between items-center">
+                        <button className="peer "> {prod.title} </button>
+                        <i className="peer fa-solid fa-angle-right "></i>{" "}
+                      </span>
                       <div className="z-30 ml-48 -my-9 w-56 hidden absolute peer-hover:flex hover:flex flex-col  drop-shadow-lg">
                         {Commercial.map((comm, idx) => (
                           <Link
@@ -117,9 +118,10 @@ const Navbar = () => {
                     </div>
                   ) : (
                     <div className="px-4 py-3 hover:bg-primary ml-32">
-                      <span className="peer flex justify-between items-center"> 
-                      <button className="peer"> {prod.title} </button>
-                      <i className="peer fa-solid fa-angle-right "></i> </span>
+                      <span className="peer flex justify-between items-center">
+                        <button className="peer"> {prod.title} </button>
+                        <i className="peer fa-solid fa-angle-right "></i>{" "}
+                      </span>
                       <div className="z-30 ml-48 -my-9 w-56 hidden absolute peer-hover:flex hover:flex flex-col  drop-shadow-lg">
                         {Packaging.map((pack, idx) => (
                           <Link
@@ -138,40 +140,18 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <Link
-            to="/Services"
-            className="w-48 px-4 py-3 hover:bg-primary"
-          >
-            <button>
-              {" "}
-              Services 
-            </button>
-            
+          <Link to="/Services" className="w-48 px-4 py-3 hover:bg-primary">
+            <button> Services</button>
           </Link>
-          <Link
-            to="/About"
-            className="w-48 px-4 py-3 hover:bg-primary"
-          >
-            <button className="peer">
-              {" "}
-              About Us 
-            </button>
-            
+          <Link to="/About" className="w-48 px-4 py-3 hover:bg-primary">
+            <button className="peer"> About Us</button>
           </Link>
-          <Link
-            to="/Gallery"
-            className="w-48 px-4 py-3 hover:bg-primary"
-          >
+          <Link to="/Gallery" className="w-48 px-4 py-3 hover:bg-primary">
             {" "}
             Gallery{" "}
           </Link>
-          <Link
-            to="/Contact"
-            className="w-48 px-4 py-3 hover:bg-primary"
-          >
-            <button>
-              Contact Us 
-            </button>
+          <Link to="/Contact" className="w-48 px-4 py-3 hover:bg-primary">
+            <button>Contact Us</button>
           </Link>
         </div>
       </div>
@@ -193,18 +173,16 @@ const Navbar = () => {
                 PRODUCTS <i className="ml-4 fa-solid fa-angle-down"></i>
               </button>
               <div className="text-tertiary hidden absolute peer-hover:flex hover:flex flex-col drop-shadow-lg bg-secondary">
-                {
-                  products.map((prod, idx) => (
-                    <Link
+                {products.map((prod, idx) => (
+                  <Link
                     to={`/Products/${encodeURIComponent(prod.title)}`}
                     className="px-5 py-3 hover:bg-primary "
                     href=""
                     key={idx}
-                    >
-                      {prod.title}
-                    </Link>
-                  ))
-                }
+                  >
+                    {prod.title}
+                  </Link>
+                ))}
                 {/* {products.map((prod, idx) => (
                   <>
                     {prod.title === "Designing Work" ? (
@@ -268,16 +246,14 @@ const Navbar = () => {
                 {" "}
                 SERVICES
               </button>
-        
             </Link>
           </li>
           <li className="block z-10 py-2 pl-3 pr-4 rounded md:border-0 md:hover:text-blue-700 md:p-0">
             <Link to="/About">
               <button className="peer px-5 py-2 text-tertiary  hover:text-primary">
                 {" "}
-                ABOUT US 
+                ABOUT US
               </button>
-              
             </Link>
           </li>
           <Link to="/Gallery">
@@ -292,26 +268,35 @@ const Navbar = () => {
               </button>
             </Link>
           </li>
-          <li>
-            
-          </li>
+          <li></li>
         </ul>
-        
-          { user ? 
-            <Link to="/Profile" className="flex gap-4 items-center p-2 px-8 rounded-xl shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(23,125,232,0.2)] hover:text-primary">
-              <img src={user?.avatar} className="h-8 w-8 rounded-full" /> 
+
+        {user ? (
+          <div className="flex gap-2">
+            <Link
+              to="/Profile"
+              className="flex gap-4 items-center p-2 px-8 rounded-xl shadow-[0_2px_15px_-3px_rgba(23,125,232,0.2),0_10px_20px_-2px_rgba(23,125,232,0.2)] hover:text-primary"
+            >
+              <img src={user?.avatar} className="h-8 w-8 rounded-full" />
               <div>
                 <p> Welcome!!! </p>
-                <span className="font-bold"> {user?.fullname.toUpperCase()} </span>
+                <span className="font-bold">
+                  {" "}
+                  {user?.fullname.toUpperCase()}{" "}
+                </span>
               </div>
-              
-            </Link> 
-          :
-          <Link to="/SignIn">
-            <button className="p-4 py-2 bg-primary text-tertiary rounded">
-                SIGN IN
+            </Link>
+            <button onClick={() => handleLogout()} className="h-12 mt-2 p-4 py-2 bg-primary text-tertiary rounded hover:text-secondary">
+              Logout
             </button>
-        </Link>}
+          </div>
+        ) : (
+          <Link to="/SignIn">
+            <button className="p-4 py-2 bg-primary text-tertiary rounded hover:text-secondary">
+              SIGN IN
+            </button>
+          </Link>
+        )}
       </div>
     </nav>
   );

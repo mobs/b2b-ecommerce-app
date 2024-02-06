@@ -38,6 +38,10 @@ const userSlice = createSlice({
                 state.message = action.payload.message
                 state.accessToken = ""
                 state.refreshToken = ""
+                state.user = null
+            })
+            .addCase(signOut.rejected, (state, action) => {
+                state.error = action.payload
             })
             .addCase(changePassword.rejected, (state, action) => {
                 state.error = action.payload
@@ -58,7 +62,7 @@ const userSlice = createSlice({
                 state.user = action.payload.data.user
             })
             .addCase(persistLogin.rejected, (state, action) => {
-                console.log("erorr:" , action.payload)
+                state.error = action.payload
             })
             .addCase(persistLogin.fulfilled, (state, action) => {
                 state.user = action.payload.data.user
