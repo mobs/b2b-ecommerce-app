@@ -15,6 +15,13 @@ export default {
       backgroundImage: {
         'gradient': 'linear-gradient(315deg, #2b4162 0%, #12100e 74%)',
       },
+      fontFamily: {
+        sans: ['Outfit', 'ui-sans', 'system-ui'],        
+        Cedarville: ['Cedarville Cursive', 'ui-serif', 'Georgia'],
+        Arizonia: ['Arizonia', 'ui-monospace', 'Menlo'],
+        Sofia: ['Sofia','cursive'],
+        nunito: ['Nunito Sans', 'sans-serif']
+      }
     },
   },
   plugins: [],

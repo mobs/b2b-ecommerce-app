@@ -77,12 +77,12 @@ const Navbar = () => {
         </button>
 
         <div className="z-30 ml-8 w-screen hidden absolute peer-hover:flex hover:flex flex-col drop-shadow-lg">
-          <Link to="/" className="w-48 px-4 py-3 hover:bg-primary">
+          <Link to="/" className="w-48 px-4 py-3 bg-secondary hover:bg-primary">
             {" "}
             Home{" "}
           </Link>
 
-          <Link to="/Products" className="px-4 py-3 w-48 hover:bg-primary">
+          <Link to="/Products" className="bg-secondary px-4 py-3 w-48 hover:bg-primary">
             <button className="peer w-full flex justify-between items-center">
               Products <i className="ml-4 fa-solid fa-angle-down"></i>
             </button>
@@ -92,14 +92,14 @@ const Navbar = () => {
                   {prod.title === "Designing Work" ? (
                     <Link
                       to={`/Products/${encodeURIComponent(prod.title)}`}
-                      className="w-56 ml-32 px-4 py-3 hover:bg-primary"
+                      className="w-56 ml-32 px-4 py-3 bg-secondary hover:bg-primary"
                       href=""
                       key={idx}
                     >
                       {prod.title}
                     </Link>
                   ) : prod.title === "Commercial Printing" ? (
-                    <div className="px-4 py-3 hover:bg-primary ml-32">
+                    <div className="px-4 py-3 bg-secondary hover:bg-primary ml-32">
                       <span className="peer flex justify-between items-center">
                         <button className="peer "> {prod.title} </button>
                         <i className="peer fa-solid fa-angle-right "></i>{" "}
@@ -109,7 +109,7 @@ const Navbar = () => {
                           <Link
                             to={`/Products/${encodeURIComponent(comm.title)}`}
                             key={idx}
-                            className="px-5 py-3 peer w-64 hover:bg-primary"
+                            className="px-5 py-3 peer w-64 bg-secondary hover:bg-primary"
                           >
                             <button> {comm.title} </button>
                           </Link>
@@ -117,7 +117,7 @@ const Navbar = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="px-4 py-3 hover:bg-primary ml-32">
+                    <div className="px-4 py-3 bg-secondary hover:bg-primary ml-32">
                       <span className="peer flex justify-between items-center">
                         <button className="peer"> {prod.title} </button>
                         <i className="peer fa-solid fa-angle-right "></i>{" "}
@@ -127,7 +127,7 @@ const Navbar = () => {
                           <Link
                             to={`/Products/${encodeURIComponent(pack.title)}`}
                             key={idx}
-                            className="px-5 py-3 peer w-64 hover:bg-primary"
+                            className="px-5 py-3 peer w-64 bg-secondary hover:bg-primary"
                           >
                             <button> {pack.title} </button>
                           </Link>
@@ -140,17 +140,17 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <Link to="/Services" className="w-48 px-4 py-3 hover:bg-primary">
+          <Link to="/Services" className="w-48 px-4 py-3 bg-secondary hover:bg-primary">
             <button> Services</button>
           </Link>
-          <Link to="/About" className="w-48 px-4 py-3 hover:bg-primary">
+          <Link to="/About" className="w-48 px-4 py-3 bg-secondary hover:bg-primary">
             <button className="peer"> About Us</button>
           </Link>
-          <Link to="/Gallery" className="w-48 px-4 py-3 hover:bg-primary">
+          <Link to="/Gallery" className="w-48 px-4 py-3 bg-secondary hover:bg-primary">
             {" "}
             Gallery{" "}
           </Link>
-          <Link to="/Contact" className="w-48 px-4 py-3 hover:bg-primary">
+          <Link to="/Contact" className="w-48 px-4 py-3 bg-secondary hover:bg-primary">
             <button>Contact Us</button>
           </Link>
         </div>

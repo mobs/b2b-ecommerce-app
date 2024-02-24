@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const API = axios.create({ baseURL: "http://localhost:5000/api/v1/"});
+const API = axios.create({ baseURL: import.meta.env.VITE_API_URL});
 
 export const fetchProducts = createAsyncThunk(
     "fetchProducts",
     async () => {
-        const response = await axios.get("/api/v1/products/products")
+        const response = await API.get("/api/v1/products/products")
 
         try {
             return response.data.data;
@@ -20,7 +20,7 @@ export const addProduct = createAsyncThunk(
     "addProduct",
     async (newProduct) => {
         try {
-            const { data } = await axios.post("api/v1/products/add", newProduct);
+            const { data } = await API.post("api/v1/products/add", newProduct, {withCredentials: true});
             return data;
           } catch (error) {
             console.log("Error in api :: addProduct: ", error.message);
@@ -33,7 +33,7 @@ export const deleteProduct = createAsyncThunk(
     "deleteProduct",
     async (id) => {
         try {
-            const { data } = await axios.delete(`/api/v1/products/delete/${id}`);
+            const { data } = await API.delete(`/api/v1/products/delete/${id}`, {withCredentials: true});
             return data;
           } catch (error) {
             console.log("Error in api :: deleteProduct: ", error.message);
@@ -47,7 +47,7 @@ export const getProductsByCategory = createAsyncThunk(
     async () => {
         try {
 
-            const { data } = await axios.get(`/api/v1/products/categoryProduct/${id}`)
+            const { data } = await API.get(`/api/v1/products/categoryProduct/${id}`, {withCredentials: true})
             
             return data;
           } catch (error) {
@@ -74,7 +74,7 @@ export const signIn = createAsyncThunk(
     "signIn",
     async (formData, {rejectWithValue}) => {
         try {
-            const { data } = await axios.post("/api/v1/users/login", formData);
+            const { data } = await API.post("/api/v1/users/login", formData, {withCredentials: true});
             return data;
           } catch (error) {
             // console.log("Error in api :: signIn: ", error);
@@ -102,7 +102,7 @@ export const signOut = createAsyncThunk(
     async (_, {rejectWithValue}) => {
 
         try {
-            const response = await axios.post("/api/v1/users/logout");
+            const response = await API.post("/api/v1/users/logout", _, {withCredentials: true});
             return response.data;
         } catch (error) {
             console.log("Error in apiSlice :: signOut: ", error.message);
@@ -114,11 +114,8 @@ export const signOut = createAsyncThunk(
 export const changePassword = createAsyncThunk(
     "changePassword",
     async (formData, {rejectWithValue}) => {
-        // const headers = {
-        //     'Authorization': `Bearer ${formData.token}`
-        // }
         try {
-            const response = await axios.post("/api/v1/users/change-password", formData.password , {withCredentials: true});
+            const response = await API.post("/api/v1/users/change-password", formData.password , {withCredentials: true});
             return response.data
         } catch (error) {
             console.log("Error in apiSlice :: changePassword ", error.message)
@@ -130,12 +127,8 @@ export const changePassword = createAsyncThunk(
 export const editPersonalInfo = createAsyncThunk(
     "editPersonalInfo",
     async (formData, {rejectWithValue}) => {
-        const headers = {
-            'Authorization': `Bearer ${formData.token}`
-        }
-
         try {
-            const response = await API.post("/users/", formData.form, {headers});
+            const response = await API.post("/users/", formData.form, {withCredentials: true});
 
             return response.data;
         } catch (error) {
@@ -147,12 +140,9 @@ export const editPersonalInfo = createAsyncThunk(
 export const editAvatar = createAsyncThunk(
     "editAvatar",
     async (formData, {rejectWithValue}) => {
-        const headers = {
-            'Authorization': `Bearer ${formData.token}`
-        }
 
         try {
-            const response = await API.post("/users/", formData.avatar, {headers});
+            const response = await API.post("/users/", formData.avatar, _, {withCredentials: true});
             return response.data
         } catch (error) {
             return rejectWithValue(error.response.data)
@@ -164,7 +154,7 @@ export const persistLogin = createAsyncThunk(
     "persistLogin",
     async (_, {rejectWithValue}) => {
         try {
-            const response = await axios.post("/api/v1/users/refresh-token")
+            const response = await API.post("/api/v1/users/refresh-token", _, {withCredentials:true})
             return response.data
         } catch (error) {
             throw rejectWithValue(error.response.data)

@@ -29,7 +29,7 @@ function App() {
   }, [])
 
   return (
-    <div className="font-outfit">
+    <div className="font-nunito">
       <BrowserRouter>
         <Navbar />
         <Routes>
